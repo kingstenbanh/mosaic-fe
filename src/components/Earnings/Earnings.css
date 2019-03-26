@@ -1,0 +1,19 @@
+.Earnings {
+
+}
+
+h3 {
+}
+
+.Earning {
+  padding: .5rem 1rem;
+  border: 1px solid #ccc;
+}
+
+.Earnings th,
+.Earnings td {
+  margin-right: 1rem;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  padding: .5rem 1rem;
+}

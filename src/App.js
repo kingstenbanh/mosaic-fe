@@ -1,28 +1,48 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect, useReducer } from 'react';
+import { Router } from '@reach/router';
+
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+import { SearchField, Earnings } from './components'
+import { StocksPage, StockDetailPage } from './pages';
+
+import reducer from './reducer';
+import initialState from './state';
+
+import { API_URL, TOKEN } from './constants';
+
+const App = () => {
+  const [state, dispatch] = useReducer(initialState, reducer);
+  const [earnings, setEarnings] = useState({});
+  
+  const search = (symbol, count = 5) => {
+    const url = `${API_URL}/${symbol}/earnings/${count}?token=${TOKEN}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setEarnings(data);
+      })
+      .catch((e) => console.log(e));
   }
+
+  useEffect(() => {
+    search('AAPL');
+  }, []);
+
+  return (
+    <div className="App">
+      <SearchField action={search} />
+
+      <Earnings data={earnings} />
+
+      {/* <Router>
+        <StocksPage path="earning" data={earnings}>
+          <StockDetailPage path=":earningId" />
+        </StocksPage>
+      </Router> */}
+    </div>
+  )
 }
 
 export default App;
